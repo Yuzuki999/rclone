@@ -1236,7 +1236,7 @@ func (f *Fs) setUploadCutoff(cs fs.SizeSuffix) (old fs.SizeSuffix, err error) {
 }
 
 func parseRootID(s string) (rootID string, err error) {
-	re := regexp.MustCompile(`\{([^}]{5,})\}`)
+	re := regexp.MustCompile(`r\$([^}]{5,})\$r`)
 	m := re.FindStringSubmatch(s)
 	if m == nil {
 		return "", errors.Errorf("%s doesn't not contain valid id", s)
@@ -1276,7 +1276,7 @@ func newFs(name, path string, m configmap.Mapper) (*Fs, error) {
 		// fs.Debugf(nil, "Root ID detected: %s", rootID)
 		name += rootID
 		// opt.RootFolderID = rootID
-		path = path[strings.Index(path, "}")+1:]
+		path = path[strings.Index(path, "$r")+2:]
 	}
 
 	if err != nil {
